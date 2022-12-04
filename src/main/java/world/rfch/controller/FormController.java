@@ -1,34 +1,31 @@
 package world.rfch.controller;
-import com.sun.mail.iap.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import sun.net.smtp.SmtpProtocolException;
-import world.rfch.service.EmailSenderService;
-
-import javax.mail.MessagingException;
+import world.rfch.controller.dto.FormDto;
+import world.rfch.serviceImpl.EmailSenderServiceImpl;
 
 
 @Controller
 public class FormController {
 
     @Autowired
-    private EmailSenderService emailSenderService;
-
-    @PostMapping("form")
-    public ResponseEntity<String> sendForm(@RequestParam("file")MultipartFile file,
-                                         @RequestParam("name")String name,
-                                         @RequestParam("email")String email,
-                                         @RequestParam("message")String message){
+    private EmailSenderServiceImpl emailSenderService;
+    @GetMapping
+    public String showPage(){
+        return "index.html";
+    }
+    @PostMapping
+    public ResponseEntity<String> sendForm(@ModelAttribute FormDto formDto){
+        System.out.println(formDto.getEmail());
         try {
-            emailSenderService.sendEmail(email,name,message,file);
+            emailSenderService.sendEmail(formDto.getEmail(),formDto.getName(),formDto.getMessage(),formDto.getFile());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
         return ResponseEntity.ok("Mail sent succesfully");
     }

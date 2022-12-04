@@ -698,32 +698,43 @@
 
     </section> <!-- end s-testimonials -->
 
+    <script>
+        function sendEmail() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "");
+            xhr.onload = function (event) {
+                alert("Success, server responded with: " + event.target.response); // raw response
+            };
+            // or onerror, onabort
+            var formData = new FormData(document.getElementById("myForm"));
+            xhr.send(formData);
+        }
+    </script>
     <div class="contact tab-full">
         <div class="grid">
             <h3>Form Styles</h3>
+             <div>
+                 <form enctype="multipart/form-data" id="myForm">
+                     <label for="name" class="contact_s">Your Name</label>
+                     <input class="h-full-width" type="text" name="name" placeholder="Ramazan V" id="name">
+             </div>
+            <div>
+                <label for="email" class="contact_s">Your E-mail</label>
+                <input class="h-full-width" type="email" name="email" placeholder="test@mailbox.com" id="email">
+            </div>
 
-            <form method="POST" enctype="multipart/form-data" action="/form">
-                <div>
-                    <label for="name" class="contact_s">Your Name</label>
-                    <input class="h-full-width" type="text" name="name" placeholder="Ramazan V" id="name">
-                </div>
-                <div>
-                    <label for="email" class="contact_s">Your E-mail</label>
-                    <input class="h-full-width" type="email" name="email" placeholder="test@mailbox.com" id="email">
-                </div>
-
-                <label for="message" class="contact_s">Message</label>
-                <textarea class="h-full-width" placeholder="Your message" name="message" id="message"></textarea>
-                <div class="chooseFile">
-                    <label for="inputTag" class="contact_s">Select File
+            <label for="message" class="contact_s">Message</label>
+            <textarea class="h-full-width" placeholder="Your message" name="message" id="message"></textarea>
+            <div class="chooseFile">
+                <label for="inputTag" class="contact_s">Select File
                     <i class="fa fa-2x fa-file"></i>
-                    <input name="file" class="h-full-width" type="file" id="inputTag">
+                    <input name="file" class="h-full-width" type="file" id="inputTag" accept=".doc,.docx,.ppt,.pptx,.pps,.odp,jpeg,.jpg,.png,.psd,.webp,.svg,.mp4,.webm,.pdf,.txt,.zip">
                     <span id="imageName"></span>
-                    </label>
-                </div>
-                <p>Support Format: doc, docx, ppt, pptx, pps, odp, jpeg, jpg, png, psd, webp, svg, mp4, webm, pdf,txt</p>
-                <input type="submit" value="Send" />
-            </form>
+                </label>
+            </div>
+            <p>Support Format: doc, docx, ppt, pptx, pps, odp, jpeg, jpg, png, psd, webp, svg, mp4, webm, pdf,txt</p>
+            <button  onclick="sendEmail()" id="send-button" value="Send">Send</button>
+                 </form>
         </div>
     </div>
     <!-- footer
