@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="asset/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<script>
+    function addEmployee() {
+        var name= document.getElementById("name").value;
+        var surname= document.getElementById("surname").value;
+        var position= document.getElementById("position").value;
+        var about= document.getElementById("Bio").value;
+        if(name==""||surname==""||position==""||about==""){
+            alert("Please fill all field");
+            return;
+        }
+        var getResponse = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                alert(response.message);
+            }
+        };
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("POST", "admin/addEmployee", true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send(JSON.stringify({
+            name: name,
+            surname: surname,
+            position: position,
+            about: about
+        }));
+    }
+    function addService() {
+        var title= document.getElementById("sTitle").value;
+        var icon= document.getElementById("icon").value;
+        var about= document.getElementById("sAbout").value;
+        if(title==""||icon==""||about==""){
+            alert("Please fill all field");
+            return;
+        }
+        var getResponse = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                alert(response.message);
+            }
+        };
+        var xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("POST", "admin/addService", true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send(JSON.stringify({
+            title: title,
+            icon: icon,
+            about: about
+        }));
+    }
+    function addPortfolio() {
+        var subTitle= document.getElementById("subHead").value;
+        var title= document.getElementById("pTitle").value;
+        if(!document.getElementById("imgsrc").files.item(0)){
+            alert("Please fill all fields");
+            return;
+        }
+        var image= document.getElementById("imgsrc").files.item(0).name;
+        var link= document.getElementById("link").value;
+        if(subTitle==""||title==""||image==""||link==""){
+            alert("Please fill all field");
+            return;
+        }
+        var getResponse = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                if(response.message=="OK"){
+                    var getSecondResponse = function(){
+                        if (this.readyState == 4 && this.status == 200) {
+                            var response2 = JSON.parse(this.responseText);
+                            alert(response2.message);
+                        }
+                    }
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = getSecondResponse;
+                    xhttp.open("POST", "admin/addPortfolio", true);
+                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhttp.send(JSON.stringify({
+                        subTitle:subTitle,
+                        title: title,
+                        image: image,
+                        link: link
+                    }));
+                }
+                else {
+                    alert(response.message);
+                }
+            }
+        };
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("POST", "admin/uploadPortfolioImage", true);
+
+        var file = document.getElementById("imgsrc");
+        var formData = new FormData();
+        formData.append("image", file.files[0]);
+        formData.append("imageName", file.files[0].name);
+        xhttp.send(formData);
+    }
+</script>
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-6">
+                <h3>Mənsub əlavə etmək</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Ad</label>
+                        <input type="text" required class="form-control" id="name" placeholder="Ad">
+                    </div>
+                    <div class="mb-3">
+                        <label for="surname" class="form-label">Soyad</label>
+                        <input type="text" required class="form-control" id="surname" placeholder="Soyad">
+                    </div>
+                    <div class="mb-3">
+                        <label for="position" class="form-label">Vəzifə</label>
+                        <input type="text" required class="form-control" id="position" placeholder="Vəzifə">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Bio" class="form-label">haqqında</label>
+                        <textarea required class="form-control" id="Bio" rows="3" placeholder="Bio"></textarea>
+                    </div>
+                    <button onclick="addEmployee()" type="button" class="btn btn-primary">Primary</button>
+                </form>
+            </div>
+            <div class="col-6">
+                <h3>Service əlavə etmək</h3>
+                <form action="">
+                    <div class="mb-3">
+                        <label for="sTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="sTitle" placeholder="Title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="icon" class="form-label">Icon</label>
+                        <input type="text" class="form-control" id="icon" placeholder="Icon">
+                    </div>
+                    <div class="mb-3">
+                        <label for="sAbout" class="form-label">haqqında</label>
+                        <textarea class="form-control" id="sAbout" rows="3" placeholder="haqqında"></textarea>
+                    </div>
+                    <button onclick="addService()" type="button" class="btn btn-primary">Primary</button>
+                </form>
+            </div>
+            <hr class="my-5">
+            <div class="col-12">
+                <h3>Portfolio əlavə etmək</h3>
+                <form action="">
+                    <div class="mb-3">
+                        <label for="subHead" class="form-label">Sub Title</label>
+                        <input type="text" class="form-control" id="subHead" placeholder="Sub Head">
+                    </div>
+                    <div class="mb-3">
+                        <label for="pTitle" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="pTitle" placeholder="Title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="imgsrc" class="form-label">İmage Src</label>
+                        <input type="file" class="form-control" id="imgsrc" placeholder="File">
+                    </div>
+                    <div class="mb-3">
+                        <label for="link" class="form-label">link</label>
+                        <input accept=".jpg,.png,.jpeg" class="form-control" type="text" id="link" rows="3" placeholder="https"></input>
+                    </div>
+                    <button onclick="addPortfolio()" type="button" class="btn btn-primary w-100">Primary</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script>
+    <script src="asset/bootstrap.bundle.min.js"></script>
+</body>
+</html>

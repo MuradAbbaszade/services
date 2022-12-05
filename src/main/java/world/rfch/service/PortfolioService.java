@@ -1,14 +1,13 @@
 package world.rfch.service;
 
-import world.rfch.jpa.entity.EmployeeEntity;
 import world.rfch.jpa.entity.PortfolioEntity;
 
 import java.util.List;
 
 public interface PortfolioService {
-    boolean add(PortfolioEntity portfolioEntity);
+    boolean save(PortfolioEntity portfolioEntity) throws Exception;
     List<PortfolioEntity> getAll();
-    PortfolioEntity getById(Long id);
-    boolean deleteById(Long id);
-    boolean update(PortfolioEntity portfolioEntity);
+    PortfolioEntity getById(Long id) throws Exception;
+    boolean deleteById(Long id) throws Exception;
+    List<PortfolioEntity> deleteAll();
 }

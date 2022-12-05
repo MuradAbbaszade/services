@@ -1,9 +1,15 @@
 package world.rfch.jpa.entity;
 
+import lombok.Data;
 import world.rfch.jpa.common.AbstractEntity;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Data
+@Entity
+@Table(name="portfolio")
 public class PortfolioEntity extends AbstractEntity {
     @Column(name = "sub_title")
     private String subTitle;
