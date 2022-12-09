@@ -5,10 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="modal.css">
     <link rel="stylesheet" href="asset/bootstrap.min.css">
+    <script src="jquery-3.6.1.min.js"></script>
     <title>Document</title>
 </head>
 <script>
+    var modal = document.getElementById("alertModal");
+    console.log(modal);
+    var closeModalButton = document.querySelector(".form-label");
+    console.log(closeModalButton);
+    var openModal = function() {
+        document.getElementById("alertModal").classList.remove("hidden");
+    };
+
+    var closeModal = function() {
+        modal.classList.add("hidden");
+    };
+    closeModalButton.addEventListener("click", closeModal);
+
+    document.addEventListener("keydown", function(e) {
+        if (e.key == "Escape" && !modal.classList.contains("hidden")) {
+            closeModal();
+        }
+    });
+
     function addEmployee() {
         var name= document.getElementById("name").value;
         var surname= document.getElementById("surname").value;
@@ -16,6 +37,7 @@
         var about= document.getElementById("Bio").value;
         if(name==""||surname==""||position==""||about==""){
             alert("Please fill all field");
+            openModal();
             return;
         }
         var getResponse = function() {
@@ -41,6 +63,9 @@
         var icon= document.getElementById("icon").value;
         var about= document.getElementById("sAbout").value;
         if(title==""||icon==""||about==""){
+            document.getElementsByClassName("close")[0].onclick = () => {
+                modal.style.display = "none";
+            }
             alert("Please fill all field");
             return;
         }
@@ -181,6 +206,19 @@
         </div>
     </div>
 
+    <div class="modal" id="alertModal">
+        <button class="close-modal">&times;</button>
+        <h1>I'm a modal window 😍</h1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+            occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+        </p>
+    </div>
 
     <script src="script.js"></script>
     <script src="asset/bootstrap.bundle.min.js"></script>

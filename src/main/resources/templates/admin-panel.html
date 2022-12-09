@@ -5,10 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="modal.css">
     <link rel="stylesheet" href="asset/bootstrap.min.css">
+    <script src="jquery-3.6.1.min.js"></script>
     <title>Document</title>
 </head>
 <script>
+
     function addEmployee() {
         var name= document.getElementById("name").value;
         var surname= document.getElementById("surname").value;
@@ -41,6 +44,9 @@
         var icon= document.getElementById("icon").value;
         var about= document.getElementById("sAbout").value;
         if(title==""||icon==""||about==""){
+            document.getElementsByClassName("close")[0].onclick = () => {
+                modal.style.display = "none";
+            }
             alert("Please fill all field");
             return;
         }
@@ -180,7 +186,6 @@
             </div>
         </div>
     </div>
-
 
     <script src="script.js"></script>
     <script src="asset/bootstrap.bundle.min.js"></script>
