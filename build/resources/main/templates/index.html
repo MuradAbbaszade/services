@@ -699,7 +699,7 @@
     </section> <!-- end s-testimonials -->
 
     <script>
-        function sendEmail() {
+        /*function sendEmail() {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "");
             xhr.onload = function (event) {
@@ -708,13 +708,13 @@
             // or onerror, onabort
             var formData = new FormData(document.getElementById("myForm"));
             xhr.send(formData);
-        }
+        }*/
     </script>
     <div class="contact tab-full">
         <div class="grid">
             <h3>Form Styles</h3>
              <div>
-                 <form enctype="multipart/form-data" id="myForm">
+                 <form method="POST" enctype="multipart/form-data" action="/" id="myForm">
                      <label for="name" class="contact_s">Your Name</label>
                      <input class="h-full-width" type="text" name="name" placeholder="Ramazan V" id="name">
              </div>
@@ -733,7 +733,7 @@
                 </label>
             </div>
             <p>Support Format: doc, docx, ppt, pptx, pps, odp, jpeg, jpg, png, psd, webp, svg, mp4, webm, pdf,txt</p>
-            <button  onclick="sendEmail()" id="send-button" value="Send">Send</button>
+            <button  id="send-button" value="Send">Send</button>
                  </form>
         </div>
     </div>
