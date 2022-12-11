@@ -17,17 +17,14 @@ import java.io.OutputStream;
 
 
 @Controller
+@RequestMapping("/form")
 public class FormController {
 
     @Autowired
     private FormServiceImpl formService;
 
-    @GetMapping
-    public String showPage(){
-        return "index.html";
-    }
-    @PostMapping("form/uploadFile")
-    public ResponseEntity<ResponseMessage> sendForm(@RequestParam("file") MultipartFile inputFile,
+    @PostMapping("uploadFile")
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile inputFile,
                                                     @RequestParam("fileName") String inputFileName){
 
         File file = new File("src/main/resources/files-from-users/"+inputFileName);
@@ -38,12 +35,12 @@ public class FormController {
             return ResponseEntity.ok(ResponseMessage.builder().message("An error occur while upload file").build());
         }
     }
-    @PostMapping("form/sendForm")
-    public ResponseEntity<ResponseMessage> addPortfolio(@RequestBody FormDto formDto){
+    @PostMapping("sendForm")
+    public ResponseEntity<ResponseMessage> addForm(@RequestBody FormDto formDto){
         try {
             formDto.setFile("src/main/resources/files-from-users/"+formDto.getFile());
             formService.save(formDto.toEntity());
-            return ResponseEntity.ok(ResponseMessage.builder().message("Form added").build());
+            return ResponseEntity.ok(ResponseMessage.builder().message("Form succesfully sent").build());
         } catch (Exception e) {
             return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
         }

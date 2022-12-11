@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="asset/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        textarea {
+            height: 100px;
+        }
+    </style>
+    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLiveLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="title" class="form-label">Kimə gedəcək</label>
+                    <input type="text" id="title" placeholder="frist.r5zvn@gmail.com" class="form-control">
+                </div>
+                <div>
+                    <label for="title" class="form-label">Başlıq</label>
+                    <input type="text" id="title" placeholder="Title lorem ipsum" class="form-control">
+                </div>
+                <div>
+                    <label for="text" class="form-label">Məlumat</label>
+                    <textarea id="text" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Gönder</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="card w-100 h-25 my-2">
+                <div class="card-header d-flex justify-content-between px-2">
+                    <div>
+                        <h5 class="card-title my-2">Müştəri adı: <b>Lorem Ipsum</b></h5>
+                        <h5 class="card-title">Mail: <b>ramzo@LoremIpsum.com</b></h5>
+                    </div>
+                    <div class="d-flex flex-column">
+                        <button class="btn-danger my-2 btn" onclick="deleteCard(this)">Delete</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Cavabla
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <textarea class="w-100 form-control">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."</textarea>
+                </div>
+                <div class="card-footer"><button class="btn btn-primary w-100">download file</button></div>
+            </div>
+            
+        </div>
+    </div>
+    <script src="asset/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

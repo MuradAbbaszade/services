@@ -7,13 +7,12 @@ import world.rfch.jpa.entity.FormEntity;
 import java.io.File;
 
 @Data
-@ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class FormDto {
-    public String name;
-    public String email;
-    public String message;
-    public String file;
+    private String name;
+    private String email;
+    private String message;
+    private String file;
 
     public FormEntity toEntity(){
         FormEntity formEntity = new FormEntity();

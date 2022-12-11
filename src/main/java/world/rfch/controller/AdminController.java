@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.channels.MulticastChannel;
 
-@Data
 @Controller
 @RequestMapping("admin")
 public class AdminController {
@@ -35,6 +34,10 @@ public class AdminController {
     @Autowired
     private PortfolioServiceImpl portfolioService;
 
+    @GetMapping("/form")
+    public String showFormPage(){
+        return "admin-form.html";
+    }
     @GetMapping
     public String showPage(){
         return "admin-panel.html";
@@ -49,7 +52,7 @@ public class AdminController {
         }
     }
     @PostMapping("addService")
-    public ResponseEntity<ResponseMessage> addEmployee(@RequestBody ServiceDto serviceDto){
+    public ResponseEntity<ResponseMessage> addService(@RequestBody ServiceDto serviceDto){
         try {
             servicesService.save(serviceDto.toEntity());
             return ResponseEntity.ok(ResponseMessage.builder().message("Service added").build());
@@ -58,7 +61,7 @@ public class AdminController {
         }
     }
     @PostMapping("addPortfolio")
-    public ResponseEntity<ResponseMessage> addEmployee(@RequestBody PortfolioDto portfolioDto){
+    public ResponseEntity<ResponseMessage> addPortfolio(@RequestBody PortfolioDto portfolioDto){
         try {
             portfolioDto.setImage("src/main/resources/static/images/portfolio/gallery/"+portfolioDto.getImage());
             portfolioService.save(portfolioDto.toEntity());
@@ -68,7 +71,7 @@ public class AdminController {
         }
     }
     @PostMapping("uploadPortfolioImage")
-    public ResponseEntity<ResponseMessage> addEmployee(@RequestParam("image")MultipartFile multipartFile,
+    public ResponseEntity<ResponseMessage> addPortfolioImage(@RequestParam("image")MultipartFile multipartFile,
                                                        @RequestParam("imageName")String name){
         File file = new File("src/main/resources/static/images/portfolio/gallery/"+name);
         try (OutputStream os = new FileOutputStream(file)) {
