@@ -1,6 +1,7 @@
 package world.rfch.jpa.entity;
 
 import lombok.Data;
+import world.rfch.controller.dto.FormDto;
 import world.rfch.jpa.common.AbstractEntity;
 
 import javax.persistence.Column;
@@ -19,4 +20,13 @@ public class FormEntity extends AbstractEntity {
     private String message;
     @Column(name = "file")
     private String file;
+
+    public FormDto toDto(){
+        FormDto formDto =  new FormDto();
+        formDto.setName(this.name);
+        formDto.setEmail(this.email);
+        formDto.setMessage(this.message);
+        formDto.setFile(this.file);
+        return formDto;
+    }
 }

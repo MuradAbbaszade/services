@@ -16,7 +16,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     private JavaMailSender javaMailSender;
 
     @Override
-    public void sendEmail(String toEmail,
+    public void sendEmailWithAttachment(String toEmail,
                           String subject,
                           String message,
                           MultipartFile attachment) throws Exception{
@@ -35,6 +35,22 @@ public class EmailSenderServiceImpl implements EmailSenderService {
             mimeMessageHelper.setText(message);
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.addAttachment(attachment.getOriginalFilename(), attachment);
+        }catch (Exception e){
+            throw new Exception("An error occur while sending email");
+        }
+        javaMailSender.send(mimeMessage);
+    }
+
+    @Override
+    public void sendEmail(String toEmail, String subject, String message) throws Exception {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+
+            mimeMessageHelper.setFrom("muradabbaszade6@gmail.com");
+            mimeMessageHelper.setTo(toEmail);
+            mimeMessageHelper.setText(message);
+            mimeMessageHelper.setSubject(subject);
         }catch (Exception e){
             throw new Exception("An error occur while sending email");
         }

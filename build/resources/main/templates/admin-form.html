@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="asset/bootstrap.min.css">
+    <link rel="stylesheet" href="/asset/bootstrap.min.css">
     <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 </head>
 <body>
     <style>
@@ -13,58 +16,154 @@
             height: 100px;
         }
     </style>
-    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <script>
+        getForms();
+
+        //Form message functions
+        let formId;
+        function setFormId(id) {
+            formId=id;
+        }
+        function deleteForm(){
+            var getResponse = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
+                    location.reload();
+                }
+            };
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = getResponse;
+            xhttp.open("POST", "/admin/form/deleteForm", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(formId);
+        }
+        function validateEmail(email){
+            return String(email)
+                .toLowerCase()
+                .match(
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                );
+        };
+        function answerForm() {
+            var email = document.getElementById("answer-email").value;
+            var title = document.getElementById("answer-title").value;
+            var text = document.getElementById("answer-text").value;
+
+            if(email==""||title==""||text==""){
+                alert("Please fill all field");
+                return;
+            }
+            if(!validateEmail(email)){
+                alert("Incorrect email");
+                return;
+            }
+            var getResponse = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
+                    alert(response.message);
+                    location.reload();
+                }
+            };
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = getResponse;
+            xhttp.open("POST", "/admin/form/answerForm", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({
+                email:email,
+                title:title,
+                message:text
+            }));
+        }
+        function getForms() {
+            var getResponse = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var forms = JSON.parse(this.responseText);
+                    var formsElement = document.getElementById("forms");
+                    for(var i=0;i<forms.length;i++) {
+                        formsElement.innerHTML+=`<div class="row">
+                            <div class="card w-100 h-25 my-2">
+                            <div class="card-header d-flex justify-content-between px-2">
+                            <div>
+                            <h5 class="card-title my-2">Müştəri adı: <b>${forms[i].name}</b></h5>
+                        <h5 class="card-title">Mail: <b>${forms[i].email}</b></h5>
+                        </div>
+                        <div class="d-flex flex-column">
+                            <button class="btn-danger my-2 btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" onclick="setFormId(${forms[i].id})">Delete</button>
+                            <button onclick="setFormId(${forms[i].id})" type="button" class="btn btn-primary" data-toggle="modal" data-target="#answerModal">
+                            Cavabla
+                            </button>
+                            </div>
+                            </div>
+                            <div class="card-body">
+                            <textarea readonly class="w-100 form-control">${forms[i].message}</textarea>
+                        </div>
+                        <div class="card-footer"><a download="" href="login.html" class="btn btn-primary w-100">Download file</a></div>
+                        </div>
+                        </div>
+                        </div>`;
+                    }
+                }
+            };
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = getResponse;
+            xhttp.open("GET", "/admin/form/getForms", true);
+            xhttp.send();
+
+        }
+    </script>
+    <!--Answer modal-->
+    <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLiveLabel">Modal title</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div>
-                    <label for="title" class="form-label">Kimə gedəcək</label>
-                    <input type="text" id="title" placeholder="frist.r5zvn@gmail.com" class="form-control">
+                    <label for="answer-email" class="form-label">Kimə gedəcək</label>
+                    <input type="text" id="answer-email" placeholder="frist.r5zvn@gmail.com" class="form-control">
                 </div>
                 <div>
-                    <label for="title" class="form-label">Başlıq</label>
-                    <input type="text" id="title" placeholder="Title lorem ipsum" class="form-control">
+                    <label for="answer-title" class="form-label">Başlıq</label>
+                    <input type="text" id="answer-title" placeholder="Title lorem ipsum" class="form-control">
                 </div>
                 <div>
-                    <label for="text" class="form-label">Məlumat</label>
-                    <textarea id="text" class="form-control"></textarea>
+                    <label for="answer-text" class="form-label">Məlumat</label>
+                    <textarea id="answer-text" class="form-control"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Gönder</button>
+              <button onclick="answerForm()" type="button" class="btn btn-primary">Gönder</button>
             </div>
           </div>
         </div>
       </div>
 
-    <div class="container my-5">
-        <div class="row">
-            <div class="card w-100 h-25 my-2">
-                <div class="card-header d-flex justify-content-between px-2">
-                    <div>
-                        <h5 class="card-title my-2">Müştəri adı: <b>Lorem Ipsum</b></h5>
-                        <h5 class="card-title">Mail: <b>ramzo@LoremIpsum.com</b></h5>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <button class="btn-danger my-2 btn" onclick="deleteCard(this)">Delete</button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Cavabla
-                        </button>
-                    </div>
+<!--Delete modal-->
+    <div id="deleteModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
                 </div>
-                <div class="card-body">
-                    <textarea class="w-100 form-control">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."</textarea>
+                <div class="modal-body">
+                    <p>Bu mesaji silmek istediyinize eminsiniz?</p>
                 </div>
-                <div class="card-footer"><button class="btn btn-primary w-100">download file</button></div>
+                <div class="modal-footer">
+                    <button onclick="deleteForm()" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                </div>
             </div>
-            
+
         </div>
     </div>
-    <script src="asset/bootstrap.bundle.min.js"></script>
 
+    <!--Form messages-->
+    <div id="forms" class="container my-5"></div>
+
+    <script src="asset/bootstrap.bundle.min.js"></script>
 </body>
 </html>

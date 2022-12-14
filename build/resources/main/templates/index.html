@@ -731,6 +731,7 @@
                             if (this.readyState == 4 && this.status == 200) {
                                 var response2 = JSON.parse(this.responseText);
                                 alert(response2.message);
+                                location. reload();
                             }
                         }
                         var xhttp = new XMLHttpRequest();

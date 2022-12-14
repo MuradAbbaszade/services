@@ -13,6 +13,9 @@ import world.rfch.controller.dto.EmployeeDto;
 import world.rfch.controller.dto.PortfolioDto;
 import world.rfch.controller.dto.ResponseMessage;
 import world.rfch.controller.dto.ServiceDto;
+import world.rfch.service.EmployeeService;
+import world.rfch.service.PortfolioService;
+import world.rfch.service.ServicesService;
 import world.rfch.serviceImpl.EmployeeServiceImpl;
 import world.rfch.serviceImpl.PortfolioServiceImpl;
 import world.rfch.serviceImpl.ServicesServiceImpl;
@@ -28,16 +31,12 @@ import java.nio.channels.MulticastChannel;
 public class AdminController {
 
     @Autowired
-    private EmployeeServiceImpl employeeService;
+    private EmployeeService employeeService;
     @Autowired
-    private ServicesServiceImpl servicesService;
+    private ServicesService servicesService;
     @Autowired
-    private PortfolioServiceImpl portfolioService;
+    private PortfolioService portfolioService;
 
-    @GetMapping("/form")
-    public String showFormPage(){
-        return "admin-form.html";
-    }
     @GetMapping
     public String showPage(){
         return "admin-panel.html";
