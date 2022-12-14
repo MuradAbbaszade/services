@@ -726,7 +726,6 @@
             var getResponse = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     var response = JSON.parse(this.responseText);
-                    if (response.message == "OK") {
                         var getSecondResponse = function () {
                             if (this.readyState == 4 && this.status == 200) {
                                 var response2 = JSON.parse(this.responseText);
@@ -742,13 +741,13 @@
                             name: name,
                             email: email,
                             message: message,
-                            file:inputFileName
+                            file:response.message
                         }));
-                    } else {
+                    }
+                else {
                         alert(response.message);
                     }
-                }
-            };
+                };
 
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = getResponse;

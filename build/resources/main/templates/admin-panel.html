@@ -26,6 +26,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
                 alert(response.message);
+                location.reload();
             }
         };
         var xhttp = new XMLHttpRequest();
@@ -52,6 +53,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
                 alert(response.message);
+                location.reload();
             }
         };
         var xhttp = new XMLHttpRequest();
@@ -81,30 +83,28 @@
         var getResponse = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var response = JSON.parse(this.responseText);
-                if(response.message=="OK"){
-                    var getSecondResponse = function(){
-                        if (this.readyState == 4 && this.status == 200) {
-                            var response2 = JSON.parse(this.responseText);
-                            alert(response2.message);
-                        }
+                var getSecondResponse = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var response2 = JSON.parse(this.responseText);
+                        alert(response2.message);
+                        location.reload();
                     }
-                    var xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = getSecondResponse;
-                    xhttp.open("POST", "admin/addPortfolio", true);
-                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                    xhttp.send(JSON.stringify({
-                        subTitle:subTitle,
-                        title: title,
-                        image: image,
-                        link: link
-                    }));
                 }
-                else {
-                    alert(response.message);
-                }
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = getSecondResponse;
+                xhttp.open("POST", "admin/addPortfolio", true);
+                xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhttp.send(JSON.stringify({
+                    subTitle: subTitle,
+                    title: title,
+                    image: response.message,
+                    link: link
+                }));
+            } else {
+                alert(response.message);
             }
-        };
-
+            ;
+        }
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = getResponse;
         xhttp.open("POST", "admin/uploadPortfolioImage", true);
@@ -173,11 +173,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="imgsrc" class="form-label">İmage Src</label>
-                        <input type="file" class="form-control" id="imgsrc" placeholder="File">
+                        <input accept=".jpg,.png,.jpeg" type="file" class="form-control" id="imgsrc" placeholder="File">
                     </div>
                     <div class="mb-3">
                         <label for="link" class="form-label">link</label>
-                        <input accept=".jpg,.png,.jpeg" class="form-control" type="text" id="link" rows="3" placeholder="https"></input>
+                        <input class="form-control" type="text" id="link" rows="3" placeholder="https"></input>
                     </div>
                     <button onclick="addPortfolio()" type="button" class="btn btn-primary w-100">Primary</button>
                 </form>

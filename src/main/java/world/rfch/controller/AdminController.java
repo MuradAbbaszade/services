@@ -62,7 +62,6 @@ public class AdminController {
     @PostMapping("addPortfolio")
     public ResponseEntity<ResponseMessage> addPortfolio(@RequestBody PortfolioDto portfolioDto){
         try {
-            portfolioDto.setImage("src/main/resources/static/images/portfolio/gallery/"+portfolioDto.getImage());
             portfolioService.save(portfolioDto.toEntity());
             return ResponseEntity.ok(ResponseMessage.builder().message("Portfolio added").build());
         } catch (Exception e) {
@@ -72,12 +71,26 @@ public class AdminController {
     @PostMapping("uploadPortfolioImage")
     public ResponseEntity<ResponseMessage> addPortfolioImage(@RequestParam("image")MultipartFile multipartFile,
                                                        @RequestParam("imageName")String name){
-        File file = new File("src/main/resources/static/images/portfolio/gallery/"+name);
+        File file = getFile(name);
         try (OutputStream os = new FileOutputStream(file)) {
             os.write(multipartFile.getBytes());
-            return ResponseEntity.ok(ResponseMessage.builder().message("OK").build());
+            return ResponseEntity.ok(ResponseMessage.builder().message(file.getPath()).build());
         }catch(Exception e) {
-            return ResponseEntity.ok(ResponseMessage.builder().message("An error occur while upload image").build());
+            return ResponseEntity.badRequest().body(ResponseMessage.builder().message("An error occur while upload image").build());
         }
+    }
+
+    public File getFile(String inputFileName){
+        int version = 0;
+        String base = "src/main/resources/static/images/portfolio/gallery/";
+        String fileName = base+inputFileName;
+        File file = new File(fileName);
+        while (file.exists()) {
+            version++;
+            String fileNameBase = fileName.substring(0, fileName.lastIndexOf('.'));
+            String extension = fileName.substring(fileName.lastIndexOf('.'));
+            file = new File(fileNameBase+"("+ version+")"+extension);
+        }
+        return file;
     }
 }
