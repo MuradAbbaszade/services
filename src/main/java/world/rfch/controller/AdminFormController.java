@@ -46,7 +46,7 @@ public class AdminFormController {
     @PostMapping("answerForm")
     public ResponseEntity<ResponseMessage> answerForm(@RequestBody FormAnswerDto formAnswerDto){
         try {
-            emailSenderService.sendEmail(formAnswerDto.getEmail(),formAnswerDto.getTitle(),formAnswerDto.getMessage());;
+            emailSenderService.sendEmail(formAnswerDto.getEmail(),formAnswerDto.getTitle(),formAnswerDto.getMessage());
             return ResponseEntity.ok(ResponseMessage.builder().message("Answer sent succesfully").build());
         } catch (Exception e) {
             return ResponseEntity.ok(ResponseMessage.builder().message("An error occur while send answer").build());

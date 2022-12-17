@@ -21,9 +21,10 @@
 
         //Form message functions
         let formId;
-        function setFormId(id) {
+        const setFormId = function(id) {
             formId=id;
-        }
+        };
+
         function deleteForm(){
             var getResponse = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -93,7 +94,7 @@
                         </div>
                         <div class="d-flex flex-column">
                             <button class="btn-danger my-2 btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" onclick="setFormId(${forms[i].id})">Delete</button>
-                            <button onclick="setFormId(${forms[i].id})" type="button" class="btn btn-primary" data-toggle="modal" data-target="#answerModal">
+                            <button onclick="setFormId(${forms[i].id})" id="answer-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#answerModal">
                             Cavabla
                             </button>
                             </div>
