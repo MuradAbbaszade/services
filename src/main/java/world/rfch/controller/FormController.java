@@ -13,6 +13,7 @@ import world.rfch.serviceImpl.FormServiceImpl;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 
@@ -25,8 +26,7 @@ public class FormController {
 
     @PostMapping("uploadFile")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile inputFile,
-                                                    @RequestParam("fileName") String inputFileName){
-
+                                                    @RequestParam("fileName") String inputFileName) {
         File file = getFile(inputFileName);
         try (OutputStream os = new FileOutputStream(file)) {
             os.write(inputFile.getBytes());

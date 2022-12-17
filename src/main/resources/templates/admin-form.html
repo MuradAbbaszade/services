@@ -82,6 +82,8 @@
                     var forms = JSON.parse(this.responseText);
                     var formsElement = document.getElementById("forms");
                     for(var i=0;i<forms.length;i++) {
+                        const fileNameArray = forms[i].file.split("\\");
+                        const fileName = fileNameArray[4];
                         formsElement.innerHTML+=`<div class="row">
                             <div class="card w-100 h-25 my-2">
                             <div class="card-header d-flex justify-content-between px-2">
@@ -99,7 +101,8 @@
                             <div class="card-body">
                             <textarea readonly class="w-100 form-control">${forms[i].message}</textarea>
                         </div>
-                        <div class="card-footer"><a download href="index.html" class="btn btn-primary w-100">Download file</a></div>
+                        <div class="card-footer">
+                        <a href="files-from-users/${fileName}" class="btn btn-primary w-100">Download file</a></div>
                         </div>
                         </div>
                         </div>`;
@@ -125,7 +128,7 @@
             <div class="modal-body">
                 <div>
                     <label for="answer-email" class="form-label">Kimə gedəcək</label>
-                    <input readonly type="text" id="answer-email" placeholder="frist.r5zvn@gmail.com" value="" class="form-control">
+                    <input type="text" id="answer-email" placeholder="frist.r5zvn@gmail.com" value="" class="form-control">
                 </div>
                 <div>
                     <label for="answer-title" class="form-label">Başlıq</label>

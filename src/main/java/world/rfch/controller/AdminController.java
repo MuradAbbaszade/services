@@ -41,6 +41,7 @@ public class AdminController {
     public String showPage(){
         return "admin-panel.html";
     }
+
     @PostMapping("addEmployee")
     public ResponseEntity<ResponseMessage> addEmployee(@RequestBody EmployeeDto employeeDto){
         try {
