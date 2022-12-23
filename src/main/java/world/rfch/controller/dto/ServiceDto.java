@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import world.rfch.jpa.entity.EmployeeEntity;
 import world.rfch.jpa.entity.ServiceEntity;
 
+import java.nio.charset.StandardCharsets;
+
 @Data
 @NoArgsConstructor
 public class ServiceDto {

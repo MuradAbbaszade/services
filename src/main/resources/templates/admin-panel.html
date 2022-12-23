@@ -45,21 +45,21 @@
         }));
     }
     function addService() {
-        var title= document.getElementById("sTitle").value;
-        var icon= document.getElementById("icon").value;
-        var about= document.getElementById("sAbout").value;
+        const title= document.getElementById("sTitle").value;
+        const icon= document.getElementById("icon").value;
+        const about= document.getElementById("sAbout").value;
         if(title==""||icon==""||about==""){
             alert("Please fill all field");
             return;
         }
         var getResponse = function() {
             if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.responseText);
+                const response = JSON.parse(this.responseText);
                 alert(response.message);
                 location.reload();
             }
         };
-        var xhttp = new XMLHttpRequest();
+        const xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = getResponse;
         xhttp.open("POST", "admin/addService", true);

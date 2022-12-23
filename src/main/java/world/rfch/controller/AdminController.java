@@ -13,7 +13,12 @@ import world.rfch.controller.dto.EmployeeDto;
 import world.rfch.controller.dto.PortfolioDto;
 import world.rfch.controller.dto.ResponseMessage;
 import world.rfch.controller.dto.ServiceDto;
+import world.rfch.jpa.entity.EmployeeEntity;
+import world.rfch.jpa.entity.FormEntity;
+import world.rfch.jpa.entity.PortfolioEntity;
+import world.rfch.jpa.entity.ServiceEntity;
 import world.rfch.service.EmployeeService;
+import world.rfch.service.FormService;
 import world.rfch.service.PortfolioService;
 import world.rfch.service.ServicesService;
 import world.rfch.serviceImpl.EmployeeServiceImpl;
@@ -25,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.channels.MulticastChannel;
+import java.util.List;
 
 @Controller
 @RequestMapping("admin")
@@ -36,10 +42,17 @@ public class AdminController {
     private ServicesService servicesService;
     @Autowired
     private PortfolioService portfolioService;
+    @Autowired
+    private FormService formService;
 
     @GetMapping
     public String showPage(){
         return "admin-panel.html";
+    }
+
+    @GetMapping("forms")
+    public ResponseEntity<List<FormEntity>> getForms(){
+        return ResponseEntity.ok(formService.getAll());
     }
 
     @PostMapping("addEmployee")
@@ -78,6 +91,34 @@ public class AdminController {
             return ResponseEntity.ok(ResponseMessage.builder().message(file.getPath()).build());
         }catch(Exception e) {
             return ResponseEntity.badRequest().body(ResponseMessage.builder().message("An error occur while upload image").build());
+        }
+    }
+
+    @PostMapping("deleteEmployee")
+    public ResponseEntity<ResponseMessage> deleteEmployee(@RequestParam Long id){
+        try {
+            employeeService.deleteById(id);
+            return ResponseEntity.ok(ResponseMessage.builder().message("Employee deleted").build());
+        } catch (Exception e) {
+            return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
+        }
+    }
+    @PostMapping("deleteService")
+    public ResponseEntity<ResponseMessage> deleteService(@RequestParam Long id){
+        try {
+            servicesService.deleteById(id);
+            return ResponseEntity.ok(ResponseMessage.builder().message("Service deleted").build());
+        } catch (Exception e) {
+            return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
+        }
+    }
+    @PostMapping("deletePortfolio")
+    public ResponseEntity<ResponseMessage> deletePortfolio(@RequestParam Long id){
+        try {
+            portfolioService.deleteById(id);
+            return ResponseEntity.ok(ResponseMessage.builder().message("Portfolio deleted").build());
+        } catch (Exception e) {
+            return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
         }
     }
 

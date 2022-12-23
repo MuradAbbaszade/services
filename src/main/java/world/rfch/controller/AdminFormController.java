@@ -29,11 +29,6 @@ public class AdminFormController {
         return "admin-form.html";
     }
 
-    @GetMapping("getForms")
-    public ResponseEntity<List<FormEntity>> getForms(){
-        return ResponseEntity.ok(formService.getAll());
-    }
-
     @PostMapping("deleteForm")
     public ResponseEntity<ResponseMessage> deleteForm(@RequestBody Long id){
         try {

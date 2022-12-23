@@ -65,11 +65,6 @@
                     alert(response.message);
                     location.reload();
                 }
-                else {
-                    var response = JSON.parse(this.responseText);
-                    alert(response.message);
-                    location.reload();
-                }
             };
             var xhttp = new XMLHttpRequest();
 
@@ -118,7 +113,7 @@
             var xhttp = new XMLHttpRequest();
 
             xhttp.onreadystatechange = getResponse;
-            xhttp.open("GET", "/admin/form/getForms", true);
+            xhttp.open("GET", "/admin/forms", true);
             xhttp.send();
 
         }
