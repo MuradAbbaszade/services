@@ -21,18 +21,30 @@
 
         //Form message functions
         let formId;
-        const setFormId = function(id) {
+
+        function getFormValues(id) {
             formId=id;
-        };
+            const getResponse = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    const response = JSON.parse(this.responseText);
+                    document.getElementById("answer-email").value=response.email;
+                }
+            };
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = getResponse;
+            xhttp.open("GET", "/admin/form/"+id, true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send();
+        }
 
         function deleteForm(){
-            var getResponse = function() {
+            const getResponse = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    var response = JSON.parse(this.responseText);
+                    const response = JSON.parse(this.responseText);
                     location.reload();
                 }
             };
-            var xhttp = new XMLHttpRequest();
+            const xhttp = new XMLHttpRequest();
 
             xhttp.onreadystatechange = getResponse;
             xhttp.open("POST", "/admin/form/deleteForm", true);
@@ -47,9 +59,9 @@
                 );
         };
         function answerForm() {
-            var email = document.getElementById("answer-email").value;
-            var title = document.getElementById("answer-title").value;
-            var text = document.getElementById("answer-text").value;
+            const email = document.getElementById("answer-email").value;
+            const title = document.getElementById("answer-title").value;
+            const text = document.getElementById("answer-text").value;
 
             if(email==""||title==""||text==""){
                 alert("Please fill all field");
@@ -59,14 +71,14 @@
                 alert("Incorrect email");
                 return;
             }
-            var getResponse = function() {
+            const getResponse = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     var response = JSON.parse(this.responseText);
                     alert(response.message);
                     location.reload();
                 }
             };
-            var xhttp = new XMLHttpRequest();
+            const xhttp = new XMLHttpRequest();
 
             xhttp.onreadystatechange = getResponse;
             xhttp.open("POST", "/admin/form/answerForm", true);
@@ -78,10 +90,10 @@
             }));
         }
         function getForms() {
-            var getResponse = function() {
+            const getResponse = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    var forms = JSON.parse(this.responseText);
-                    var formsElement = document.getElementById("forms");
+                    const forms = JSON.parse(this.responseText);
+                    const formsElement = document.getElementById("forms");
                     for(var i=0;i<forms.length;i++) {
                         const fileNameArray = forms[i].file.split("\\");
                         const fileName = fileNameArray[4];
@@ -94,7 +106,7 @@
                         </div>
                         <div class="d-flex flex-column">
                             <button class="btn-danger my-2 btn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#deleteModal" onclick="setFormId(${forms[i].id})">Delete</button>
-                            <button onclick="setFormId(${forms[i].id})" id="answer-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#answerModal">
+                            <button onclick="getFormValues(${forms[i].id})" id="answer-button" type="button" class="btn btn-primary" data-toggle="modal" data-target="#answerModal">
                             Cavabla
                             </button>
                             </div>
@@ -110,7 +122,7 @@
                     }
                 }
             };
-            var xhttp = new XMLHttpRequest();
+            const xhttp = new XMLHttpRequest();
 
             xhttp.onreadystatechange = getResponse;
             xhttp.open("GET", "/admin/forms", true);
@@ -129,7 +141,7 @@
             <div class="modal-body">
                 <div>
                     <label for="answer-email" class="form-label">Kimə gedəcək</label>
-                    <input type="text" id="answer-email" placeholder="frist.r5zvn@gmail.com" value="" class="form-control">
+                    <input readonly type="text" id="answer-email" value="" class="form-control">
                 </div>
                 <div>
                     <label for="answer-title" class="form-label">Başlıq</label>

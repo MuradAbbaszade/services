@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/asset/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <title>Document</title>
+  </head>
+
+  <script>
+      loadEmployees();
+      loadServices();
+      loadPortfolios();
+
+      let portfolioId;
+      let serviceId;
+      let employeeId;
+
+      function getServiceValues(id) {
+        serviceId=id;
+        const getResponse = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            const response = JSON.parse(this.responseText);
+            document.getElementById("service-title").value=response.title;
+            document.getElementById("service-about").value=response.about;
+            document.getElementById("service-icon").value=response.icon;
+          }
+        };
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("GET", "/admin/service/"+id, true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send();
+      }
+
+      function getPortfolioValues(id) {
+        portfolioId=id;
+        const getResponse = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            const response = JSON.parse(this.responseText);
+            document.getElementById("portfolio-title").value=response.title;
+            document.getElementById("portfolio-subTitle").value=response.subTitle;
+            document.getElementById("portfolio-image").value=response.image;
+            document.getElementById("portfolio-link").value=response.link;
+          }
+        };
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("GET", "/admin/portfolio/"+id, true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send();
+      }
+
+      function getEmployeeValues(id) {
+        employeeId=id;
+        const getResponse = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            const response = JSON.parse(this.responseText);
+            document.getElementById("employee-name").value=response.name;
+            document.getElementById("employee-surname").value=response.surname;
+            document.getElementById("employee-position").value=response.position;
+            document.getElementById("employee-about").value=response.about;
+          }
+        };
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("GET", "/admin/employee/"+id, true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send();
+      }
+
+      function portfolioDeleteModal(id) {
+        portfolioId=id;
+        document.getElementById("deleteButton").addEventListener("click",function(){
+          deletePortfolio(portfolioId);
+        });
+      }
+      function serviceDeleteModal(id) {
+        serviceId=id;
+        document.getElementById("deleteButton").addEventListener("click",function(){
+          deleteService(serviceId);
+        });
+      }
+      function employeeDeleteModal(id) {
+        employeeId=id;
+        document.getElementById("deleteButton").addEventListener("click",function(){
+          deleteEmployee(employeeId);
+        });
+      }
+
+      function deleteEmployee(employeeId){
+          const getResponse = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const response = JSON.parse(this.responseText);
+                  location.reload();
+              }
+          };
+          const xhttp = new XMLHttpRequest();
+
+          xhttp.onreadystatechange = getResponse;
+          xhttp.open("POST", "/admin/deleteEmployee", true);
+          xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          xhttp.send(employeeId);
+      }
+
+      function deletePortfolio(portfolioId){
+          const getResponse = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const response = JSON.parse(this.responseText);
+                  location.reload();
+              }
+          };
+          const xhttp = new XMLHttpRequest();
+
+          xhttp.onreadystatechange = getResponse;
+          xhttp.open("POST", "/admin/deletePortfolio", true);
+          xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          xhttp.send(portfolioId);
+      }
+
+      function deleteService(serviceId){
+          const getResponse = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const response = JSON.parse(this.responseText);
+                  location.reload();
+              }
+          };
+          const xhttp = new XMLHttpRequest();
+
+          xhttp.onreadystatechange = getResponse;
+          xhttp.open("POST", "/admin/deleteService", true);
+          xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          xhttp.send(serviceId);
+      }
+
+      function updateEmployee() {
+        const id = employeeId;
+        const name= document.getElementById("employee-name").value;
+        const surname= document.getElementById("employee-surname").value;
+        const position= document.getElementById("employee-position").value;
+        const about= document.getElementById("employee-about").value;
+        if(name==""||surname==""||position==""||about==""){
+          alert("Please fill all field");
+          return;
+        }
+        const getResponse = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            const response = JSON.parse(this.responseText);
+            location.reload();
+          }
+        };
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("POST", "/admin/saveEmployee", true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send(JSON.stringify({
+          id: id,
+          name: name,
+          surname: surname,
+          position: position,
+          about: about
+        }));
+      }
+      function updateService() {
+        const id = serviceId;
+        const title= document.getElementById("service-title").value;
+        const icon= document.getElementById("service-icon").value;
+        const about= document.getElementById("service-about").value;
+        if(title==""||icon==""||about==""){
+          alert("Please fill all field");
+          return;
+        }
+        const getResponse = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            const response = JSON.parse(this.responseText);
+            location.reload();
+          }
+        };
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("POST", "/admin/saveService", true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send(JSON.stringify({
+          id:id,
+          title: title,
+          icon: icon,
+          about: about
+        }));
+      }
+
+      function loadPortfolios(){
+          const getResponse = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const portfolios = JSON.parse(this.responseText);
+                  let portfoliosElement = document.getElementById("portfolios");
+                  for(let i=0;i<portfolios.length;i++) {
+                      portfoliosElement.innerHTML+=`<li class="card">
+          <div class="card-body">
+            <div class="d-flex gap-2">
+              <h6 class="card-title fw-bold mb-2">Title:</h6>
+              <h6>${portfolios[i].title}</h6>
+            </div>
+            <div class="d-flex gap-2">
+              <h6 class="card-title fw-bold mb-2">Sub Title:</h6>
+              <h6>${portfolios[i].subTitle}</h6>
+            </div>
+            <p class="card-text"><b class="me-2">Image:</b>${portfolios[i].image}</p>
+            <p class="card-text">
+              <b class="me-2">Link:</b>${portfolios[i].link}
+            </p>
+            <button onclick="portfolioDeleteModal(${portfolios[i].id})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            <button onclick="getPortfolioValues(${portfolios[i].id})" class="btn btn-success" data-toggle="modal" data-target="#portfolio-update-modal">Update</button>
+          </div>
+        </li>`;
+                  }
+              }
+          };
+          const xhttp = new XMLHttpRequest();
+
+          xhttp.onreadystatechange = getResponse;
+          xhttp.open("GET", "/portfolios", true);
+          xhttp.send();
+
+      };
+
+      function loadEmployees(){
+          const getResponse = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const employees = JSON.parse(this.responseText);
+                  let employeesElement = document.getElementById("employees");
+                  for(let i=0;i<employees.length;i++) {
+                      employeesElement.innerHTML+=`<li class="card">
+          <div class="card-body">
+            <div class="d-flex gap-2">
+              <h6 class="card-title fw-bold mb-2">Name:</h6>
+              <h6>${employees[i].name}</h6>
+            </div>
+           <div class="d-flex gap-2">
+              <h6 class="card-title fw-bold mb-2">Surname:</h6>
+              <h6>${employees[i].surname}</h6>
+            </div>
+            <div class="d-flex gap-2">
+              <h6 class="card-title fw-bold mb-2">Postion:</h6>
+              <h6>${employees[i].position}</h6>
+            </div>
+            <p class="card-text">
+              <b>About:</b> ${employees[i].about}
+            </p>
+            <button onclick="employeeDeleteModal(${employees[i].id})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            <button onclick="getEmployeeValues(${employees[i].id})" class="btn btn-success" data-toggle="modal" data-target="#employee-update-modal">Update</button>
+          </div>
+        </li>`;
+                  }
+              }
+          };
+          const xhttp = new XMLHttpRequest();
+
+          xhttp.onreadystatechange = getResponse;
+          xhttp.open("GET", "/employees", true);
+          xhttp.send();
+
+      };
+      function loadServices(){
+          const getResponse = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  const services = JSON.parse(this.responseText);
+                  let servicesElement = document.getElementById("services");
+                  for(let i=0;i<services.length;i++) {
+                      servicesElement.innerHTML+=`<li class="card">
+          <div class="card-body">
+            <div class="d-flex gap-2">
+              <h6 class="card-title fw-bold mb-2">Title:</h6>
+              <h6>${services[i].title}</h6>
+            </div>
+            <div class="d-flex gap-2">
+              <h6 class="card-title fw-bold mb-2">Icon:</h6>
+              <h6>${services[i].icon}</h6>
+            </div>
+            <p class="card-text">
+              <b>About:</b> ${services[i].about}
+            </p>
+            <button onclick="serviceDeleteModal(${services[i].id})" type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            <button onclick="getServiceValues(${services[i].id})" class="btn btn-success" data-toggle="modal" data-target="#service-update-modal">Update</button>
+          </div>
+        </li>`;
+                  }
+              }
+          };
+          const xhttp = new XMLHttpRequest();
+
+          xhttp.onreadystatechange = getResponse;
+          xhttp.open("GET", "/services", true);
+          xhttp.send();
+
+      };
+
+      function savePortfolio() {
+        const id= portfolioId;
+        const subTitle= document.getElementById("portfolio-subTitle").value;
+        const title= document.getElementById("portfolio-title").value;
+        const link= document.getElementById("portfolio-link").value;
+        if(subTitle==""||title==""||link==""){
+          alert("Please fill all field");
+          return;
+        }
+        if(document.getElementById("portfolio-newimage").files.item(0)){
+        const getResponse = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            const response = JSON.parse(this.responseText);
+            const getSecondResponse = function () {
+              if (this.readyState == 4 && this.status == 200) {
+                const response2 = JSON.parse(this.responseText);
+                location.reload();
+              }
+            }
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = getSecondResponse;
+            xhttp.open("POST", "/admin/savePortfolio", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(JSON.stringify({
+              id: id,
+              subTitle: subTitle,
+              title: title,
+              image: response.message,
+              link: link
+            }));
+          }
+        }
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("POST", "/admin/uploadPortfolioImage", true);
+
+        const file = document.getElementById("portfolio-newimage");
+        const formData = new FormData();
+        formData.append("image", file.files[0]);
+        formData.append("imageName", file.files[0].name);
+        xhttp.send(formData);
+      } else {
+          const getResponse = function () {
+            if (this.readyState == 4 && this.status == 200) {
+              const response = JSON.parse(this.responseText);
+              location.reload();
+            }
+          }
+          const xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = getResponse;
+          xhttp.open("POST", "/admin/savePortfolio", true);
+          xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          xhttp.send(JSON.stringify({
+            id: id,
+            subTitle: subTitle,
+            title: title,
+            image: document.getElementById("portfolio-image").value,
+            link: link
+          }));
+        }
+      }
+  </script>
+
+  <body class="container">
+    <section class="mt-5">
+      <div class="display-5 my-2">Members</div>
+      <ul id="employees">
+
+      </ul>
+    </section>
+    <hr class="my-5" />
+
+    <section>
+      <div class="display-5 my-2">Services</div>
+      <ul id="services">
+
+      </ul>
+    </section>
+
+    <hr class="my-5" />
+    <section>
+      <div class="display-5 my-2">Portfolio</div>
+      <ul id="portfolios">
+
+      </ul>
+    </section>
+
+    <!--Update Service modal-->
+    <div class="modal fade" id="service-update-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Update Service</h1>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <label for="service-title" class="form-label">Title</label>
+              <input type="text" id="service-title" value="" class="form-control">
+            </div>
+            <div>
+              <label for="service-icon" class="form-label">Icon</label>
+              <input type="text" id="service-icon" class="form-control">
+            </div>
+            <div>
+              <label for="service-about" class="form-label">About</label>
+              <textarea id="service-about" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button onclick="updateService()" type="button" class="btn btn-primary">Gönder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Update Portfolio modal-->
+    <div class="modal fade" id="portfolio-update-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" >Update Portfolio</h1>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <label for="portfolio-title" class="form-label">Title</label>
+              <input type="text" id="portfolio-title" value="" class="form-control">
+            </div>
+            <div>
+              <label for="portfolio-subTitle" class="form-label">Subtitle</label>
+              <input type="text" id="portfolio-subTitle" class="form-control">
+            </div>
+            <div>
+              <label for="portfolio-image" class="form-label">Image</label>
+              <input readonly type="text" id="portfolio-image" class="form-control">
+              <input type="file" id="portfolio-newimage" class="form-control" accept=".jpg,.png,.jpeg">
+            </div>
+            <div>
+              <label for="portfolio-link" class="form-label">Link</label>
+              <input type="text" id="portfolio-link" class="form-control">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button onclick="savePortfolio()" type="button" class="btn btn-primary">Gönder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Update Employee modal-->
+    <div class="modal fade" id="employee-update-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLiveLabel">Update Employee</h1>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <label for="employee-name" class="form-label">Name</label>
+              <input type="text" id="employee-name" value="" class="form-control">
+            </div>
+            <div>
+              <label for="employee-surname" class="form-label">Surname</label>
+              <input type="text" id="employee-surname" class="form-control">
+            </div>
+            <div>
+              <label for="employee-position" class="form-label">Position</label>
+              <input type="text" id="employee-position" class="form-control">
+            </div>
+            <div>
+              <label for="employee-about" class="form-label">About</label>
+              <textarea id="employee-about" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button onclick="updateEmployee()" type="button" class="btn btn-primary">Gönder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--DeleteModal-->
+    <div id="deleteModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Silmek istediyinize eminsiniz?</p>
+          </div>
+          <div class="modal-footer">
+            <button id="deleteButton" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="asset/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

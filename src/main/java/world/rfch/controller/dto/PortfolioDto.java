@@ -8,6 +8,7 @@ import world.rfch.jpa.entity.PortfolioEntity;
 @Data
 @NoArgsConstructor
 public class PortfolioDto {
+    private Long id;
     private String title;
     private String subTitle;
     private String image;
@@ -15,6 +16,7 @@ public class PortfolioDto {
 
     public PortfolioEntity toEntity(){
         PortfolioEntity portfolioEntity = new PortfolioEntity();
+        portfolioEntity.setId(this.id);
         portfolioEntity.setTitle(this.title);
         portfolioEntity.setSubTitle(this.subTitle);
         portfolioEntity.setImage(this.image);

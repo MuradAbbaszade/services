@@ -50,34 +50,67 @@ public class AdminController {
         return "admin-panel.html";
     }
 
+    @GetMapping("data")
+    public String showData(){
+        return "data.html";
+    }
+
     @GetMapping("forms")
     public ResponseEntity<List<FormEntity>> getForms(){
         return ResponseEntity.ok(formService.getAll());
     }
 
-    @PostMapping("addEmployee")
-    public ResponseEntity<ResponseMessage> addEmployee(@RequestBody EmployeeDto employeeDto){
+    @GetMapping("portfolio/{id}")
+    public ResponseEntity<PortfolioEntity> getPortfolio(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(portfolioService.getById(id));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("service/{id}")
+    public ResponseEntity<ServiceEntity> getService(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(servicesService.getById(id));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("employee/{id}")
+    public ResponseEntity<EmployeeEntity> getEmployee(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(employeeService.getById(id));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("saveEmployee")
+    public ResponseEntity<ResponseMessage> saveEmployee(@RequestBody EmployeeDto employeeDto){
         try {
             employeeService.save(employeeDto.toEntity());
-            return ResponseEntity.ok(ResponseMessage.builder().message("Employee added").build());
+            return ResponseEntity.ok(ResponseMessage.builder().message("Employee saved").build());
         } catch (Exception e) {
             return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
         }
     }
-    @PostMapping("addService")
-    public ResponseEntity<ResponseMessage> addService(@RequestBody ServiceDto serviceDto){
+
+    @PostMapping("saveService")
+    public ResponseEntity<ResponseMessage> saveService(@RequestBody ServiceDto serviceDto){
         try {
             servicesService.save(serviceDto.toEntity());
-            return ResponseEntity.ok(ResponseMessage.builder().message("Service added").build());
+            return ResponseEntity.ok(ResponseMessage.builder().message("Service saved").build());
         } catch (Exception e) {
             return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
         }
     }
-    @PostMapping("addPortfolio")
-    public ResponseEntity<ResponseMessage> addPortfolio(@RequestBody PortfolioDto portfolioDto){
+    @PostMapping("savePortfolio")
+    public ResponseEntity<ResponseMessage> savePortfolio(@RequestBody PortfolioDto portfolioDto){
         try {
             portfolioService.save(portfolioDto.toEntity());
-            return ResponseEntity.ok(ResponseMessage.builder().message("Portfolio added").build());
+            return ResponseEntity.ok(ResponseMessage.builder().message("Portfolio saved").build());
         } catch (Exception e) {
             return ResponseEntity.ok(ResponseMessage.builder().message(e.getMessage()).build());
         }
@@ -95,7 +128,7 @@ public class AdminController {
     }
 
     @PostMapping("deleteEmployee")
-    public ResponseEntity<ResponseMessage> deleteEmployee(@RequestParam Long id){
+    public ResponseEntity<ResponseMessage> deleteEmployee(@RequestBody Long id){
         try {
             employeeService.deleteById(id);
             return ResponseEntity.ok(ResponseMessage.builder().message("Employee deleted").build());
@@ -104,7 +137,7 @@ public class AdminController {
         }
     }
     @PostMapping("deleteService")
-    public ResponseEntity<ResponseMessage> deleteService(@RequestParam Long id){
+    public ResponseEntity<ResponseMessage> deleteService(@RequestBody Long id){
         try {
             servicesService.deleteById(id);
             return ResponseEntity.ok(ResponseMessage.builder().message("Service deleted").build());
@@ -113,7 +146,7 @@ public class AdminController {
         }
     }
     @PostMapping("deletePortfolio")
-    public ResponseEntity<ResponseMessage> deletePortfolio(@RequestParam Long id){
+    public ResponseEntity<ResponseMessage> deletePortfolio(@RequestBody Long id){
         try {
             portfolioService.deleteById(id);
             return ResponseEntity.ok(ResponseMessage.builder().message("Portfolio deleted").build());
