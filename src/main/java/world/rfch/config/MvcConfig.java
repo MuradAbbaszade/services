@@ -12,9 +12,9 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("admin/files-from-users/**")
-                .addResourceLocations("file:///C:/services/src/main/resources/files-from-users/");
+                .addResourceLocations("file:C:/services/src/main/resources/files-from-users/");
         registry
                 .addResourceHandler("/static/**","/images/***","/fonts/**","/images/**","/images/*","/images/","/*")
-                .addResourceLocations("file:///C:/services/src/main/resources/static/**","file:///C:/services/src/main/resources/static/","file:///C:/services/src/main/resources/static/images/**");
+                .addResourceLocations("file:C:/services/src/main/resources/static/**","file:C:/services/src/main/resources/static/","file:C:/services/src/main/resources/static/images/**");
     }
 }
