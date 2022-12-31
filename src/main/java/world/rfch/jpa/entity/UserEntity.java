@@ -22,4 +22,11 @@ public class UserEntity extends AbstractEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<RoleEntity> roleEntityList;
+
+    @OneToMany(mappedBy="referringUserId")
+    private List<UserEntity> referencedUserEntityList;
+
+    @ManyToOne
+    @JoinColumn(name="referring_user_id")
+    private UserEntity referringUserId;
 }

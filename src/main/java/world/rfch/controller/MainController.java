@@ -27,7 +27,7 @@ public class MainController {
     public String showMainPage(){
         return "index.html";
     }
-    
+
     @GetMapping("portfolios")
     public ResponseEntity<List<PortfolioEntity>> getPortfolios(){
         return ResponseEntity.ok(portfolioService.getAll());

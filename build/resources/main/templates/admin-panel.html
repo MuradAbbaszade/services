@@ -16,43 +16,16 @@
 <script>
 
 
-    function addEmployee() {
-        var name= document.getElementById("name").value;
-        var surname= document.getElementById("surname").value;
-        var position= document.getElementById("position").value;
-        var about= document.getElementById("Bio").value;
+    function saveEmployee() {
+        const name= document.getElementById("name").value;
+        const surname= document.getElementById("surname").value;
+        const position= document.getElementById("position").value;
+        const about= document.getElementById("Bio").value;
         if(name==""||surname==""||position==""||about==""){
             alert("Please fill all field");
             return;
         }
-        var getResponse = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.responseText);
-                alert(response.message);
-                location.reload();
-            }
-        };
-        var xhttp = new XMLHttpRequest();
-
-        xhttp.onreadystatechange = getResponse;
-        xhttp.open("POST", "admin/addEmployee", true);
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhttp.send(JSON.stringify({
-            name: name,
-            surname: surname,
-            position: position,
-            about: about
-        }));
-    }
-    function addService() {
-        const title= document.getElementById("sTitle").value;
-        const icon= document.getElementById("icon").value;
-        const about= document.getElementById("sAbout").value;
-        if(title==""||icon==""||about==""){
-            alert("Please fill all field");
-            return;
-        }
-        var getResponse = function() {
+        const getResponse = function() {
             if (this.readyState == 4 && this.status == 200) {
                 const response = JSON.parse(this.responseText);
                 alert(response.message);
@@ -62,7 +35,34 @@
         const xhttp = new XMLHttpRequest();
 
         xhttp.onreadystatechange = getResponse;
-        xhttp.open("POST", "admin/addService", true);
+        xhttp.open("POST", "admin/saveEmployee", true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send(JSON.stringify({
+            name: name,
+            surname: surname,
+            position: position,
+            about: about
+        }));
+    }
+    function saveService() {
+        const title= document.getElementById("sTitle").value;
+        const icon= document.getElementById("icon").value;
+        const about= document.getElementById("sAbout").value;
+        if(title==""||icon==""||about==""){
+            alert("Please fill all field");
+            return;
+        }
+        const getResponse = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                const response = JSON.parse(this.responseText);
+                alert(response.message);
+                location.reload();
+            }
+        };
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = getResponse;
+        xhttp.open("POST", "admin/saveService", true);
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhttp.send(JSON.stringify({
             title: title,
@@ -70,32 +70,32 @@
             about: about
         }));
     }
-    function addPortfolio() {
-        var subTitle= document.getElementById("subHead").value;
-        var title= document.getElementById("pTitle").value;
+    function savePortfolio() {
+        const subTitle= document.getElementById("subHead").value;
+        const title= document.getElementById("pTitle").value;
         if(!document.getElementById("imgsrc").files.item(0)){
             alert("Please fill all fields");
             return;
         }
-        var image= document.getElementById("imgsrc").files.item(0).name;
-        var link= document.getElementById("link").value;
+        const image= document.getElementById("imgsrc").files.item(0).name;
+        const link= document.getElementById("link").value;
         if(subTitle==""||title==""||image==""||link==""){
             alert("Please fill all field");
             return;
         }
-        var getResponse = function() {
+        const getResponse = function() {
             if (this.readyState == 4 && this.status == 200) {
-                var response = JSON.parse(this.responseText);
-                var getSecondResponse = function () {
+                const response = JSON.parse(this.responseText);
+                const getSecondResponse = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        var response2 = JSON.parse(this.responseText);
+                        const response2 = JSON.parse(this.responseText);
                         alert(response2.message);
                         location.reload();
                     }
                 }
-                var xhttp = new XMLHttpRequest();
+                const xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = getSecondResponse;
-                xhttp.open("POST", "admin/addPortfolio", true);
+                xhttp.open("POST", "admin/savePortfolio", true);
                 xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                 xhttp.send(JSON.stringify({
                     subTitle: subTitle,
@@ -106,12 +106,12 @@
             }
             ;
         }
-        var xhttp = new XMLHttpRequest();
+        const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = getResponse;
         xhttp.open("POST", "admin/uploadPortfolioImage", true);
 
-        var file = document.getElementById("imgsrc");
-        var formData = new FormData();
+        const file = document.getElementById("imgsrc");
+        const formData = new FormData();
         formData.append("image", file.files[0]);
         formData.append("imageName", file.files[0].name);
         xhttp.send(formData);
@@ -139,7 +139,7 @@
                         <label for="Bio" class="form-label">haqqında</label>
                         <textarea required class="form-control" id="Bio" rows="3" placeholder="Bio"></textarea>
                     </div>
-                    <button onclick="addEmployee()" type="button" class="btn btn-primary">Primary</button>
+                    <button onclick="saveEmployee()" type="button" class="btn btn-primary">Primary</button>
                 </form>
             </div>
             <div class="col-6">
@@ -157,7 +157,7 @@
                         <label for="sAbout" class="form-label">haqqında</label>
                         <textarea class="form-control" id="sAbout" rows="3" placeholder="haqqında"></textarea>
                     </div>
-                    <button onclick="addService()" type="button" class="btn btn-primary">Primary</button>
+                    <button onclick="saveService()" type="button" class="btn btn-primary">Primary</button>
                 </form>
             </div>
             <hr class="my-5">
@@ -180,7 +180,7 @@
                         <label for="link" class="form-label">link</label>
                         <input class="form-control" type="text" id="link" rows="3" placeholder="https"></input>
                     </div>
-                    <button onclick="addPortfolio()" type="button" class="btn btn-primary w-100">Primary</button>
+                    <button onclick="savePortfolio()" type="button" class="btn btn-primary w-100">Primary</button>
                 </form>
             </div>
         </div>

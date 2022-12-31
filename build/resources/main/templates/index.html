@@ -26,7 +26,6 @@
     <!-- script
     ================================================== -->
     <script src="static/js/modernizr.js"></script>
-
     <!-- favicons
     ================================================== -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -454,7 +453,6 @@
                     let portfoliosElement = document.getElementById("portfolios");
                     for(let i=0;i<portfolios.length;i++) {
                         const imageNameArray = portfolios[i].image.split("\\");
-                        console.log(imageNameArray.length);
                         const imgName = imageNameArray[7];
                         portfoliosElement.innerHTML+=`<div class="column" data-aos="fade-up">
                 <div class="folio-item">
@@ -547,8 +545,8 @@
                 );
         };
         function sendForm() {
-            var name = document.getElementById("name").value;
-            var email = document.getElementById("email").value;
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
             if (!document.getElementById("inputTag").files.item(0)) {
                 alert("Please fill all fields");
                 return;
@@ -557,23 +555,23 @@
                 alert("Incorrect email");
                 return;
             }
-            var inputFileName = document.getElementById("inputTag").files.item(0).name;
-            var message = document.getElementById("message").value;
+            const inputFileName = document.getElementById("inputTag").files.item(0).name;
+            const message = document.getElementById("message").value;
             if (name == "" || email == "" || message == "" || inputFileName=="") {
                 alert("Please fill all field");
                 return;
             }
-            var getResponse = function () {
+            const getResponse = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    var response = JSON.parse(this.responseText);
-                        var getSecondResponse = function () {
+                    const response = JSON.parse(this.responseText);
+                    const getSecondResponse = function () {
                             if (this.readyState == 4 && this.status == 200) {
                                 var response2 = JSON.parse(this.responseText);
                                 alert(response2.message);
                                 location. reload();
                             }
                         }
-                        var xhttp = new XMLHttpRequest();
+                    const xhttp = new XMLHttpRequest();
                         xhttp.onreadystatechange = getSecondResponse;
                         xhttp.open("POST", "form/sendForm", true);
                         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -586,12 +584,12 @@
                     }
                 };
 
-            var xhttp = new XMLHttpRequest();
+            const xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = getResponse;
             xhttp.open("POST", "form/uploadFile", true);
 
-            var inputFile = document.getElementById("inputTag");
-            var formData = new FormData();
+            const inputFile = document.getElementById("inputTag");
+            const formData = new FormData();
             formData.append("file", inputFile.files[0]);
             formData.append("fileName", inputFile.files[0].name);
             xhttp.send(formData);
